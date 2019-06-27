@@ -1,6 +1,11 @@
 const express = require("express");
 const router = express.Router();
+const bcrypt = require("bcryptjs");
+const { check, validationResult } = require("express-validator");
+const jwt = require("jsonwebtoken");
+const config = require("config");
 
+const User = require("../models/User.js");
 // @route   GET api/auth
 // @desc    Get logged in user
 // @access  Private

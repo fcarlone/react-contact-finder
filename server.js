@@ -18,7 +18,7 @@ app.get("/", (req, res) => {
 
 // Define Routes
 app.use("/api/auth", require("./routes/auth"));
-app.use("/api/contacs", require("./routes/contacts"));
+app.use("/api/contacts", require("./routes/contacts"));
 app.use("/api/users", require("./routes/users"));
 
 app.listen(PORT, () => {

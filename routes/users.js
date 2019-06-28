@@ -5,7 +5,7 @@ const { check, validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
 const config = require("config");
 
-const User = require("../models/User.js");
+const User = require("../models/User");
 
 // @route   POST api/users
 // @desc    Register a user
@@ -28,7 +28,6 @@ router.post(
       return res.status(400).json({ erros: errors.array() });
     }
 
-    // res.send("passed");
     // Destructure res.body
     const { name, email, password } = req.body;
 
@@ -51,7 +50,7 @@ router.post(
       await user.save();
       // res.send("user saved in database");
 
-      // JWT
+      // Send JWT
       const payload = {
         user: {
           id: user.id

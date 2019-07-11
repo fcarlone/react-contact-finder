@@ -90,8 +90,9 @@ const AuthState = props => {
 
   // Logout
   const logout = () => {
-    console.log("loadout");
+    dispatch({ type: LOGOUT });
   };
+
   // Clear Errors
   const clearErrors = () => {
     dispatch({ type: CLEAR_ERRORS });

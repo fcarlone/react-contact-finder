@@ -1,10 +1,25 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import AlertContext from "../../context/alert/alertContext";
+import AuthContext from "../../context/auth/authContext";
 
-const Register = () => {
+const Register = props => {
   const alertContext = useContext(AlertContext);
+  const authContext = useContext(AuthContext);
 
   const { setAlert } = alertContext;
+  const { register, error, clearErrors, isAuthenticated } = authContext;
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      props.history.push("/");
+    }
+
+    if (error === "User already exists") {
+      setAlert(error, "danger");
+      clearErrors();
+    }
+    // eslint-disable-next-line
+  }, [error, isAuthenticated, props.history]);
 
   const [user, setUser] = useState({
     name: "",
@@ -18,7 +33,7 @@ const Register = () => {
   const onChange = event => {
     setUser({
       ...user,
-      [event.targe.name]: email.target.value
+      [event.target.name]: event.target.value
     });
   };
 
@@ -29,7 +44,11 @@ const Register = () => {
     } else if (password !== password2) {
       setAlert("Passwords do not match", "danger");
     } else {
-      console.log("Register submit");
+      register({
+        name,
+        email,
+        password
+      });
     }
   };
 
@@ -41,13 +60,7 @@ const Register = () => {
       <form onSubmit={onSubmit}>
         <div className="form-group">
           <label htmlFor="name">Name</label>
-          <input
-            type="text"
-            name="name"
-            value={name}
-            onChange={onChange}
-            required
-          />
+          <input type="text" name="name" value={name} onChange={onChange} />
         </div>
         <div className="form-group">
           <label htmlFor="email">Email Address</label>

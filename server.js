@@ -1,5 +1,6 @@
 const express = require("express");
 const connectDB = require("./config/db");
+const path = require("path");
 
 const app = express();
 
@@ -11,15 +12,21 @@ connectDB();
 // Init Middleware
 app.use(express.json({ extended: false }));
 
-// Add a route
-app.get("/", (req, res) => {
-  res.json({ msg: "Welcome" });
-});
-
 // Define Routes
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/contacts", require("./routes/contacts"));
 app.use("/api/users", require("./routes/users"));
+
+// Serve static assets in production
+if (process.env.NODE_ENV === "production") {
+  // Set static folder
+  app.use(express.static("client/build"));
+
+  // route
+  app.get("*", (req, res) => {
+    res.senfFile(path.resolve(__dirname, "client", "build", "index.html"));
+  });
+}
 
 app.listen(PORT, () => {
   console.log(`Server started on port: ${PORT}`);
